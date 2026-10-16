@@ -76,6 +76,12 @@ public class ProfileController {
             passwordStatusLabel.setText("Last changed Sep 1, 2026");
 
         } else if (isOrg) {
+            if (Navigator.isPreviewMode()) {
+                docAlertBanner.setVisible(false);
+                docAlertBanner.setManaged(false);
+                return;
+            }
+
             List<Document> alerts = maintenanceService.getCurrentDocumentAlerts();
             LocalDate today = LocalDate.now();
             long expiredCount = alerts.stream().filter(document -> document.isExpired(today)).count();

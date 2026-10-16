@@ -93,6 +93,7 @@ public final class Navigator {
 
     private static final String VIEW_ROOT = "/com/aniplato/view/";
     private static final String NAV_PREFIX = "nav-";
+    private static final boolean PREVIEW_MODE = Boolean.parseBoolean(System.getenv("ANIPLATO_PREVIEW"));
 
     private static Scene scene;
     private static StackPane content;
@@ -145,12 +146,16 @@ public final class Navigator {
         return currentRole == null ? Role.ADMIN : currentRole;
     }
 
+    public static boolean isPreviewMode() {
+        return PREVIEW_MODE;
+    }
+
     public static Screen currentScreen() {
         return currentScreen;
     }
 
     public static void show(Screen screen) {
-        maintenanceService.runMaintenance();
+        if (!PREVIEW_MODE) maintenanceService.runMaintenance();
         if (screen.kind == Kind.WINDOW) {
             content = null;                       // the shell sets it again when it loads
             screenListener = null;                // so does the shell's highlight listener
